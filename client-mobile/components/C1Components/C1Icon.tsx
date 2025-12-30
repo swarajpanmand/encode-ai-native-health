@@ -1,32 +1,41 @@
 import React from 'react';
-import { Text, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
+import { Feather } from '@expo/vector-icons';
 
 interface C1IconProps {
     name?: string;
     category?: string;
+    size?: number;
+    color?: string;
 }
 
-const iconMap: Record<string, string> = {
-    'help-circle': '❓',
-    'compass': '🧭',
-    'star': '⭐',
-    'heart': '❤️',
-    'check': '✓',
-    'info': 'ℹ️',
-    'alert': '⚠️',
-    'settings': '⚙️',
-    'user': '👤',
-    'search': '🔍',
+// Map C1 icon names to Feather icon names
+const iconMap: Record<string, keyof typeof Feather.glyphMap> = {
+    'help-circle': 'help-circle',
+    'compass': 'compass',
+    'star': 'star',
+    'heart': 'heart',
+    'check': 'check',
+    'info': 'info',
+    'alert': 'alert-triangle',
+    'settings': 'settings',
+    'user': 'user',
+    'search': 'search',
+    'shield': 'shield',
+    'shield-check': 'shield', // Feather doesn't have shield-check, fallback to shield
+    'zap': 'zap',
+    'droplets': 'droplet',
+    'flower': 'sun', // Fallback for flower
+    'leaf': 'feather', // Fallback for leaf
+    'security': 'lock',
+    'medical': 'activity',
+    'nature': 'sun',
 };
 
-export function C1Icon({ name }: C1IconProps) {
-    const icon = name ? iconMap[name] || '•' : '•';
+export function C1Icon({ name, size = 20, color = '#101820' }: C1IconProps) {
+    const iconName = name ? iconMap[name] || 'circle' : 'circle';
 
-    return <Text style={styles.icon}>{icon}</Text>;
+    return <Feather name={iconName} size={size} color={color} />;
 }
 
-const styles = StyleSheet.create({
-    icon: {
-        fontSize: 20,
-    },
-});
+const styles = StyleSheet.create({});

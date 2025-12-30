@@ -41,7 +41,7 @@ app.post('/api/chat', async (req, res) => {
                 role: 'system',
                 content: `You are an AI-native consumer health copilot. 
 Your job is to help users understand food products and their ingredients at the exact moment they are deciding what to buy or consume.
-
+ther
 Core Objectives:
 - Infer what the user likely cares about without forcing them to configure settings.
 - Reduce cognitive effort. The user should NOT have to think hard.
@@ -124,9 +124,19 @@ Follow-up Question Logic:
   - "Want guidance on what information is missing?"
 
 Format Requirement:
-Present follow-up questions as interactive UI elements such as buttons or cards.
-Each question should represent a meaningful next step in the experience.
-No more than 10 words per question where possible.`
+Present follow-up questions as a 'ButtonGroup' component at the end of the response.
+Example structure:
+{
+  "component": "ButtonGroup",
+  "props": {
+    "variant": "suggestion",
+    "children": [
+      { "component": "Button", "props": { "children": "Question 1", "variant": "secondary" } },
+      { "component": "Button", "props": { "children": "Question 2", "variant": "secondary" } },
+      { "component": "Button", "props": { "children": "Question 3", "variant": "secondary" } }
+    ]
+  }
+}`
             }
         ];
 

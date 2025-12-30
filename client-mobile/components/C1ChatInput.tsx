@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, Text } from 'react-native';
+import { Feather } from '@expo/vector-icons';
 
 interface C1ChatInputProps {
     onSend: (message: string) => void;
     isLoading: boolean;
 }
+
+import { BlurView } from 'expo-blur';
 
 export function C1ChatInput({ onSend, isLoading }: C1ChatInputProps) {
     const [input, setInput] = useState('');
@@ -18,73 +21,87 @@ export function C1ChatInput({ onSend, isLoading }: C1ChatInputProps) {
 
     return (
         <View style={styles.container}>
-            <TextInput
-                style={styles.input}
-                value={input}
-                onChangeText={setInput}
-                placeholder="Ask me anything..."
-                placeholderTextColor="#9CA3AF"
-                multiline
-                maxLength={500}
-                editable={!isLoading}
-                onSubmitEditing={handleSend}
-                blurOnSubmit={false}
-            />
-            <TouchableOpacity
-                style={[styles.sendButton, (isLoading || !input.trim()) && styles.sendButtonDisabled]}
-                onPress={handleSend}
-                disabled={isLoading || !input.trim()}
-            >
-                {isLoading ? (
-                    <ActivityIndicator size="small" color="#FFFFFF" />
-                ) : (
-                    <Text style={styles.sendButtonText}>Send</Text>
-                )}
-            </TouchableOpacity>
+            <BlurView intensity={20} tint="light" style={styles.blurContainer}>
+                <TextInput
+                    style={styles.input}
+                    value={input}
+                    onChangeText={setInput}
+                    placeholder="Ask me anything..."
+                    placeholderTextColor="#9CA3AF"
+                    multiline
+                    maxLength={500}
+                    editable={!isLoading}
+                    onSubmitEditing={handleSend}
+                    blurOnSubmit={false}
+                />
+                <TouchableOpacity
+                    style={[styles.sendButton, (isLoading || !input.trim()) && styles.sendButtonDisabled]}
+                    onPress={handleSend}
+                    disabled={isLoading || !input.trim()}
+                >
+                    {isLoading ? (
+                        <ActivityIndicator size="small" color="#FFFFFF" />
+                    ) : (
+                        <Feather name="arrow-up" size={20} color="#FFFFFF" />
+                    )}
+                </TouchableOpacity>
+            </BlurView>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        flexDirection: 'row',
         padding: 16,
-        backgroundColor: '#FFFFFF',
-        borderTopWidth: 1,
-        borderTopColor: '#E5E7EB',
+        paddingBottom: 24,
+        backgroundColor: 'transparent', // Transparent to show content behind if floating
+    },
+    blurContainer: {
+        flexDirection: 'row',
         alignItems: 'flex-end',
+        backgroundColor: 'rgba(255, 255, 255, 0.8)', // Semi-transparent white
+        borderRadius: 32,
+        padding: 8,
+        paddingLeft: 20,
+        overflow: 'hidden',
+        borderWidth: 1,
+        borderColor: 'rgba(255, 255, 255, 0.6)',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.08,
+        shadowRadius: 16,
+        elevation: 4,
     },
     input: {
         flex: 1,
-        minHeight: 44,
-        maxHeight: 120,
-        paddingHorizontal: 16,
-        paddingVertical: 12,
-        backgroundColor: '#F9FAFB',
-        borderRadius: 22,
-        borderWidth: 1,
-        borderColor: '#E5E7EB',
+        minHeight: 40,
+        maxHeight: 100,
+        paddingVertical: 10,
         fontSize: 16,
-        color: '#111827',
+        color: '#101820',
         marginRight: 12,
     },
     sendButton: {
-        backgroundColor: '#3B82F6',
-        paddingHorizontal: 24,
-        paddingVertical: 12,
-        borderRadius: 22,
+        backgroundColor: '#3FB984', // Emerald Green
+        width: 40,
+        height: 40,
+        borderRadius: 20,
         justifyContent: 'center',
         alignItems: 'center',
-        minWidth: 80,
-        height: 44,
+        shadowColor: '#3FB984',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.3,
+        shadowRadius: 4,
+        elevation: 2,
     },
     sendButtonDisabled: {
-        backgroundColor: '#9CA3AF',
-        opacity: 0.5,
+        backgroundColor: '#E0E0E0',
+        shadowOpacity: 0,
+        elevation: 0,
     },
     sendButtonText: {
         color: '#FFFFFF',
-        fontSize: 16,
-        fontWeight: '600',
+        fontSize: 12,
+        fontWeight: '700',
     },
 });

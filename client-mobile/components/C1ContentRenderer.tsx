@@ -12,12 +12,21 @@ import { C1Tag } from './C1Components/C1Tag';
 import { C1ButtonGroup } from './C1Components/C1ButtonGroup';
 import { C1Button } from './C1Components/C1Button';
 import { C1CalloutV2 } from './C1Components/C1CalloutV2';
+import { C1Stats } from './C1Components/C1Stats';
+import { C1Accordion } from './C1Components/C1Accordion';
+import { C1SectionBlock } from './C1Components/C1SectionBlock';
+import { C1List } from './C1Components/C1List';
+import { C1DataTile } from './C1Components/C1DataTile';
 
 interface C1ContentRendererProps {
     content: string;
+    onButtonPress?: (text: string) => void;
 }
 
-export function C1ContentRenderer({ content }: C1ContentRendererProps) {
+export function C1ContentRenderer({ content, onButtonPress }: C1ContentRendererProps) {
+    console.log('=== C1ContentRenderer - Raw Content ===');
+    console.log(content);
+
     try {
         // First, try to extract content from <content thesys="true"> wrapper
         let jsonContent = content;
@@ -36,9 +45,11 @@ export function C1ContentRenderer({ content }: C1ContentRendererProps) {
 
         // Try to parse as JSON (new C1 format)
         const parsed = JSON.parse(jsonContent);
+        console.log('=== Parsed JSON ===');
+        console.log(JSON.stringify(parsed, null, 2));
 
         if (parsed.component) {
-            return <View style={styles.container}>{renderComponent(parsed.component)}</View>;
+            return <View style={styles.container}>{renderComponent(parsed.component, onButtonPress)}</View>;
         }
 
 
@@ -78,17 +89,22 @@ export function C1ContentRenderer({ content }: C1ContentRendererProps) {
     }
 }
 
-function renderComponent(comp: any): React.ReactNode {
-    if (!comp || !comp.component) return null;
+function renderComponent(comp: any, onButtonPress?: (text: string) => void): React.ReactNode {
+    if (!comp || !comp.component) {
+        console.warn('Invalid component structure:', comp);
+        return null;
+    }
 
     const { component, props } = comp;
+    console.log(`=== Rendering Component: ${component} ===`);
+    console.log('Props:', JSON.stringify(props, null, 2));
 
     switch (component) {
         case 'Card':
             return (
                 <C1Card key={Math.random()}>
                     {props?.children?.map((child: any, index: number) => (
-                        <View key={index}>{renderComponent(child)}</View>
+                        <View key={index}>{renderComponent(child, onButtonPress)}</View>
                     ))}
                 </C1Card>
             );
@@ -103,7 +119,7 @@ function renderComponent(comp: any): React.ReactNode {
             return (
                 <C1MiniCardBlock>
                     {props?.children?.map((child: any, index: number) => (
-                        <View key={index}>{renderComponent(child)}</View>
+                        <View key={index}>{renderComponent(child, onButtonPress)}</View>
                     ))}
                 </C1MiniCardBlock>
             );
@@ -121,7 +137,7 @@ function renderComponent(comp: any): React.ReactNode {
                 <C1ProfileTile
                     title={props?.title}
                     label={props?.label}
-                    child={props?.child ? renderComponent(props.child) : undefined}
+                    child={props?.child ? renderComponent(props.child, onButtonPress) : undefined}
                 />
             );
 
@@ -141,7 +157,7 @@ function renderComponent(comp: any): React.ReactNode {
             return (
                 <C1ButtonGroup variant={props?.variant}>
                     {props?.children?.map((child: any, index: number) => (
-                        <View key={index}>{renderComponent(child)}</View>
+                        <View key={index}>{renderComponent(child, onButtonPress)}</View>
                     ))}
                 </C1ButtonGroup>
             );
@@ -151,6 +167,7 @@ function renderComponent(comp: any): React.ReactNode {
                 <C1Button
                     name={props?.name}
                     variant={props?.variant}
+                    onPress={onButtonPress}
                 >
                     {props?.children}
                 </C1Button>
@@ -165,7 +182,84 @@ function renderComponent(comp: any): React.ReactNode {
                 />
             );
 
+        case 'Stats':
+            if (props?.items && Array.isArray(props.items)) {
+                return (
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-around', paddingVertical: 12 }}>
+                        {props.items.map((item: any, index: number) => (
+                            <C1Stats
+                                key={index}
+                                number={item.number}
+                                label={item.label}
+                                icon={item.icon}
+                            />
+                        ))}
+                    </View>
+                );
+            }
+            return (
+                <C1Stats
+                    number={props?.number}
+                    label={props?.label}
+                    icon={props?.icon}
+                />
+            );
+
+        case 'Accordion':
+            return (
+                <C1Accordion>
+                    {props?.children?.map((item: any, index: number) => ({
+                        value: item.value,
+                        trigger: item.trigger,
+                        content: (
+                            <View key={index} style={{ gap: 12 }}>
+                                {item.content?.map((contentItem: any, contentIndex: number) => (
+                                    <View key={contentIndex}>{renderComponent(contentItem, onButtonPress)}</View>
+                                ))}
+                            </View>
+                        ),
+                    }))}
+                </C1Accordion>
+            );
+
+        case 'SectionBlock':
+            return (
+                <C1SectionBlock
+                    isFoldable={props?.isFoldable}
+                    sections={props?.sections}
+                >
+                    {props?.sections?.map((section: any, sectionIndex: number) => (
+                        <View key={sectionIndex}>
+                            {section.content?.map((contentItem: any, contentIndex: number) => (
+                                <View key={contentIndex}>{renderComponent(contentItem, onButtonPress)}</View>
+                            ))}
+                        </View>
+                    ))}
+                </C1SectionBlock>
+            );
+
+        case 'List':
+            return (
+                <C1List
+                    variant={props?.variant}
+                    items={props?.items}
+                />
+            );
+
+        case 'DataTile':
+            return (
+                <C1DataTile
+                    amount={props?.amount}
+                    description={props?.description}
+                    child={props?.child ? renderComponent(props.child, onButtonPress) : undefined}
+                />
+            );
+
         default:
+            console.error('=== UNKNOWN COMPONENT ===');
+            console.error('Component name:', component);
+            console.error('Props:', JSON.stringify(props, null, 2));
+            console.error('Full structure:', JSON.stringify(comp, null, 2));
             return <Text style={styles.unknownComponent}>Unknown component: {component}</Text>;
     }
 }

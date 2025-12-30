@@ -22,7 +22,11 @@ export default function HomeScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
     >
-      <C1MessageList messages={messages} isLoading={isLoading} />
+      <C1MessageList
+        messages={messages}
+        isLoading={isLoading}
+        onSendMessage={sendMessage}
+      />
       <C1ChatInput onSend={sendMessage} isLoading={isLoading} />
     </KeyboardAvoidingView>
   );

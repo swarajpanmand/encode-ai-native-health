@@ -7,3 +7,7 @@ export { C1ProfileTile } from './C1ProfileTile';
 export { C1Icon } from './C1Icon';
 export { C1TagBlock } from './C1TagBlock';
 export { C1Tag } from './C1Tag';
+export { C1Stats } from './C1Stats';
+export { C1Accordion } from './C1Accordion';
+export { C1SectionBlock } from './C1SectionBlock';
+export { C1List } from './C1List';

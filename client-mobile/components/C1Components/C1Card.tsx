@@ -16,13 +16,15 @@ export function C1Card({ children }: C1CardProps) {
 const styles = StyleSheet.create({
     card: {
         backgroundColor: '#FFFFFF',
-        borderRadius: 12,
-        padding: 16,
+        borderRadius: 20, // Increased radius
+        padding: 20, // Increased padding
+        borderWidth: 1,
+        borderColor: 'rgba(0,0,0,0.05)', // Subtle border
         shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-        elevation: 3,
-        gap: 16,
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.06, // Reduced opacity
+        shadowRadius: 12, // Softer shadow
+        elevation: 2,
+        gap: 20, // Increased gap
     },
 });
