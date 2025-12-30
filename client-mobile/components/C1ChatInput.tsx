@@ -53,7 +53,7 @@ export function C1ChatInput({ onSend, isLoading }: C1ChatInputProps) {
 const styles = StyleSheet.create({
     container: {
         padding: 16,
-        paddingBottom: 24,
+        paddingBottom: 90, // Increased to clear the absolute tab bar (80px)
         backgroundColor: 'transparent', // Transparent to show content behind if floating
     },
     blurContainer: {

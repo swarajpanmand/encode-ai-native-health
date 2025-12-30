@@ -1,6 +1,7 @@
 import { StyleSheet, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { ImageTextExtractor } from '@/components/ImageTextExtractor';
+import { C1Header } from '@/components/C1Components/C1Header';
 
 export default function TabTwoScreen() {
   const router = useRouter();
@@ -15,6 +16,7 @@ export default function TabTwoScreen() {
 
   return (
     <View style={styles.container}>
+      <C1Header title="Document Scanner" subtitle="Analyze medical records & labels" />
       <ImageTextExtractor onTextExtracted={handleTextExtracted} />
     </View>
   );

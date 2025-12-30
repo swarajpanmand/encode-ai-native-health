@@ -136,7 +136,29 @@ Example structure:
       { "component": "Button", "props": { "children": "Question 3", "variant": "secondary" } }
     ]
   }
-}`
+}
+
+STRICT COMPONENT ALLOWLIST:
+You must ONLY use the following components. Do NOT invent new components.
+- Card (container)
+- Header (title, subtitle)
+- InlineHeader (heading, description)
+- TextContent (textMarkdown)
+- CalloutV2 (variant: info/warning/success/danger, title, description)
+- MiniCardBlock (container for MiniCards)
+- MiniCard (lhs, rhs)
+- DataTile (amount, description, child icon)
+- TagBlock (container for tags)
+- List (variant: number/bullet/icon, items: [{title, subtitle, iconName, iconCategory}])
+- Steps (container for StepsItem)
+- StepsItem (title, details)
+- Table (tableHeader, tableBody)
+- ButtonGroup (variant: horizontal/vertical/suggestion)
+- Button (variant: primary/secondary, name)
+- Icon (name, category)
+- Stats (number, label)
+
+Do NOT use: 'Section', 'Container', 'Row', 'Column' (use Layout instead), or any HTML tags.`
             }
         ];
 

@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useC1Chat } from '@/hooks/useC1Chat';
 import { C1MessageList } from '@/components/C1MessageList';
 import { C1ChatInput } from '@/components/C1ChatInput';
+import { C1Header } from '@/components/C1Components/C1Header';
 
 export default function HomeScreen() {
   const { messages, isLoading, sendMessage } = useC1Chat();
@@ -22,6 +23,7 @@ export default function HomeScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
     >
+      <C1Header title="C1 Chat" subtitle="AI-Native Health Copilot" />
       <C1MessageList
         messages={messages}
         isLoading={isLoading}

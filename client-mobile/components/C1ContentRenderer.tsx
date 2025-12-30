@@ -17,6 +17,10 @@ import { C1Accordion } from './C1Components/C1Accordion';
 import { C1SectionBlock } from './C1Components/C1SectionBlock';
 import { C1List } from './C1Components/C1List';
 import { C1DataTile } from './C1Components/C1DataTile';
+import { C1Steps, C1StepsItem } from './C1Components/C1Steps';
+import { C1InlineHeader } from './C1Components/C1InlineHeader';
+import { C1Table } from './C1Components/C1Table';
+import { C1Layout } from './C1Components/C1Layout';
 
 interface C1ContentRendererProps {
     content: string;
@@ -253,6 +257,63 @@ function renderComponent(comp: any, onButtonPress?: (text: string) => void): Rea
                     description={props?.description}
                     child={props?.child ? renderComponent(props.child, onButtonPress) : undefined}
                 />
+            );
+
+        case 'Steps':
+            return (
+                <C1Steps>
+                    {props?.children?.map((child: any, index: number) => (
+                        <View key={index}>
+                            {renderComponent(
+                                {
+                                    ...child,
+                                    props: {
+                                        ...child.props,
+                                        index: index,
+                                        isLast: index === (props.children?.length || 0) - 1,
+                                    },
+                                },
+                                onButtonPress
+                            )}
+                        </View>
+                    ))}
+                </C1Steps>
+            );
+
+        case 'StepsItem':
+            return (
+                <C1StepsItem
+                    title={props?.title}
+                    details={props?.details ? renderComponent(props.details, onButtonPress) : undefined}
+                    index={props?.index}
+                    isLast={props?.isLast}
+                />
+            );
+
+        case 'InlineHeader':
+            return (
+                <C1InlineHeader
+                    heading={props?.heading}
+                    description={props?.description}
+                />
+            );
+
+        case 'Table':
+            return (
+                <C1Table
+                    tableHeader={props?.tableHeader}
+                    tableBody={props?.tableBody}
+                    renderCellContent={(content) => renderComponent(content, onButtonPress)}
+                />
+            );
+
+        case 'Layout':
+            return (
+                <C1Layout
+                    renderContent={(content) => renderComponent(content, onButtonPress)}
+                >
+                    {props.children}
+                </C1Layout>
             );
 
         default:
