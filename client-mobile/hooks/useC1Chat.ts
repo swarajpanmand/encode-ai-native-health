@@ -18,7 +18,8 @@ export interface C1ChatActions {
     clearMessages: () => void;
 }
 
-const API_URL = 'http://localhost:3001/api/chat';
+// const API_URL = 'http://localhost:3001/api/chat';
+const API_URL = 'https://encode-ai-native-health.onrender.com/api/chat';
 
 export function useC1Chat(): C1ChatState & C1ChatActions {
     const [messages, setMessages] = useState<Message[]>([]);

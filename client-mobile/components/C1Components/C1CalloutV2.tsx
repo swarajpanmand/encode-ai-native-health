@@ -22,8 +22,8 @@ const variantIcons = {
 };
 
 export function C1CalloutV2({ variant = 'info', title, description }: C1CalloutV2Props) {
-    const style = variantStyles[variant];
-    const icon = variantIcons[variant];
+    const style = variantStyles[variant] || variantStyles.info;
+    const icon = variantIcons[variant] || variantIcons.info;
 
     return (
         <View style={[styles.container, { backgroundColor: style.backgroundColor, borderLeftColor: style.borderColor }]}>
