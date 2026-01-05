@@ -1,82 +1,140 @@
-# Quick Start Guide - C1 Chat
+# Quick Start — C1 Health Copilot
 
-## 🚀 Get Started in 3 Steps
+C1 is an AI-native health copilot available as:
+- Mobile app
+- Chrome extension (Side Panel)
 
-### Step 1: Setup Backend Server
+This guide helps you run all parts locally.
+
+---
+
+## 1) Setup Backend Server (Required)
 
 ```bash
 cd server
 cp .env.example .env
 ```
 
-Edit `.env` and add your API key from https://console.thesys.dev/keys:
+Add your API key in `.env` (get it from https://console.thesys.dev/keys):
+
 ```env
 THESYS_API_KEY=your_key_here
 ```
 
-Start server:
+Start the backend:
+
 ```bash
+npm install
 npm run dev
 ```
 
-### Step 2: Test the Mobile App
+Verify the server is running:
+
+```bash
+curl http://localhost:3001/health
+```
+
+---
+
+## 2) Run the Chrome Extension (Unpacked)
+
+This project uses an unpacked Chrome extension (no Chrome Web Store required).
+
+Build the extension:
+
+```bash
+cd extension
+npm install
+npm run build
+```
+
+The build outputs to:
+
+```text
+extension/dist/
+```
+
+Load the extension into Chrome:
+1. Open Chrome
+2. Visit `chrome://extensions`
+3. Enable Developer mode (top-right toggle)
+4. Click “Load unpacked”
+5. Select the folder `extension/dist`
+
+✅ You should now see C1 Health Copilot installed.
+
+How to use the extension:
+- Select text on any webpage → right-click → “Ask Health Copilot”
+- Right-click a product image → “Ask Health Copilot”
+- The Side Panel opens with:
+  - Instant health summary
+  - Risk badges (high sodium, ultra-processed, etc.)
+  - Follow-up actions and chat input
+
+---
+
+## 3) Test the Mobile App
 
 In a new terminal:
+
 ```bash
 cd client-mobile
-npm run android  # or npm run ios
+npm install
+npm run android   # or: npm run ios
 ```
 
-### Step 3: Chat!
-
-1. Type a message in the input field
-2. Press Send
-3. Watch C1 generate a response!
-
----
-
-## 📱 What You'll See
-
-- **Home Screen**: Full chat interface
-- **Input**: Text field at bottom with Send button
-- **Messages**: User messages (blue, right) and AI messages (left, with 🤖)
-- **Loading**: Typing indicator while waiting for response
+Emulator/network notes:
+- Android Emulator: `http://10.0.2.2:3001/api/chat`
+- iOS Simulator: `http://localhost:3001/api/chat`
+- Physical Device: `http://192.168.1.XXX:3001/api/chat`
 
 ---
 
-## ⚠️ Important Notes
+## 4) Try C1 Health Copilot
 
-### For Android Emulator
-Update `API_URL` in `client-mobile/hooks/useC1Chat.ts`:
-```typescript
-const API_URL = 'http://10.0.2.2:3001/api/chat';
+Chrome Extension:
+- Analyze ingredient lists
+- Analyze product packaging images
+- Ask follow-up questions directly in the side panel
+
+Mobile App:
+- Full chat experience
+- Ingredient explanations
+- Health impact summaries
+
+---
+
+## Project Structure
+
+```text
+root
+├── extension       # load this in chrome://extensions
+│   ├── background
+│   ├── content
+│   ├── sidepanel
+│   ├── dist        
+│   ├── manifest.json
+│   └── package.json
+│
+├── client-mobile
+├── server
+└── QUICKSTART.md
 ```
 
-### For iOS Simulator
-Default `localhost:3001` should work fine.
-
-### For Physical Device
-Use your computer's IP address:
-```typescript
-const API_URL = 'http://192.168.1.XXX:3001/api/chat';
-```
-
 ---
 
-## 🔍 Troubleshooting
+## Troubleshooting
 
-**"Network request failed"**
-- Ensure backend server is running
-- Check API_URL matches your setup
-- Verify firewall allows connections
+Extension not responding?
+- Ensure backend is running on `localhost:3001`
+- Reload the extension after restarting the server
+- Check extension DevTools → Console
 
-**"No response from server"**
-- Check backend logs for errors
-- Verify API key is valid
-- Test health endpoint: `curl http://localhost:3001/health`
+“Network request failed”
+- Backend not running
+- Wrong API URL
+- Firewall blocking localhost
 
----
-
-## 📚 Full Documentation
-
-See [walkthrough.md](file:///home/swaraj31/.gemini/antigravity/brain/03243d45-f519-4ac3-9365-0ebd966f3cba/walkthrough.md) for complete setup guide, testing checklist, and enhancement ideas.
+Right-click actions do nothing
+- Make sure you loaded `extension/dist`, not `extension/`
+- Reload the page after installing the extension
