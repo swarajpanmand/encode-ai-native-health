@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "C1 Health Copilot",
+  "version": "0.1.0",
+  "permissions": [
+    "sidePanel",
+    "activeTab",
+    "contextMenus",
+    "storage"
+  ],
+  "host_permissions": [
+    "http://localhost:3001/*",
+    "http://127.0.0.1:3001/*"
+  ],
+  "background": {
+    "service_worker": "dist/background/background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["dist/content/content.js"]
+    }
+  ],
+  "side_panel": {
+    "default_path": "dist/sidepanel/index.html"
+  }
+}
